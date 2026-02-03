@@ -42,7 +42,6 @@ Design a system that:
 ### Components
 - API Gateway
 - URL Shortening Service
-- Redirect Service
 - Database (Key‑Value store)
 - Cache (Redis)
 - Optional: Analytics pipeline (async)
