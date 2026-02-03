@@ -333,6 +333,42 @@ expiry (optional)
 
 ---
 
-## 17. Final Interview Summary (30 seconds)
-> We generate short URLs using auto‑increment IDs encoded with Base62 to keep them compact and URL‑safe. We store mappings in a key‑value store, cache redirects in Redis for low latency, and scale horizontally. Abuse is mitigated using rate limiting, validation, and async reputation checks while keeping the redirect path fast.
+### Q1. If IDs are sequential and Base62‑encoded, can users guess the next URL?
 
+A: Yes, they are theoretically guessable, but that’s acceptable because short URLs are public resources, not protected data.
+---
+
+### Q2. Isn’t this the same problem as exposing DB IDs directly?
+
+A: No. Exposing DB IDs is dangerous when tied to authorization or private data. In a URL shortener, guessing a URL only redirects to a public page and gives no extra privileges.
+
+---
+
+### Q3. Why is guessability acceptable here?
+
+A: Because:
+- No sensitive data is exposed
+- No user identity or permissions are involved
+- Abuse is mitigated via rate limiting and monitoring
+
+---
+
+### Q4. How do you prevent large‑scale enumeration?
+
+A: With:
+- Rate limiting on redirects
+- Bot detection
+- Monitoring unusual traffic patterns
+- Enumeration without scale is harmless; scale is blocked.
+
+---
+
+### Q5. Do real systems accept this trade‑off?
+
+A: Yes. Most production URL shorteners use sequential IDs with encoding because it’s simple, scalable, and sufficient for public identifiers.
+
+---
+
+### Q6. If the interviewer insists on reducing guessability, what can you do?
+
+A: Start IDs from a large offset like 1,000,000
